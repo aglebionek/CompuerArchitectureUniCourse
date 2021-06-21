@@ -1,0 +1,18 @@
+	org 100h
+	
+	MOV	AH,10
+	MOV	DX,a
+	INT	21h
+
+	MOV	AH,2
+	MOV	DL,10
+	MOV	DL,13
+	INT	21h
+
+	MOV	AH,9
+	MOV	DX,a+2
+	INT	21h
+
+	mov	ax, 4C00h; KONIEC PROGRAMU
+	int	21h
+a db 6,0,36,36,36,36,36,36,36,36,36

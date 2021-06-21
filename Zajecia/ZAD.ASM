@@ -1,0 +1,64 @@
+	org 100h
+	pusha
+	pushf
+	CALL ent; push adres_powrotu_tutaj
+
+	XOR	DX,DX
+	MOV	BL,13
+	MOV	AH,1
+	XOR	CX,CX
+nieent:
+	INC	CX
+	INT	21h
+	CMP	AL,BL
+	MOV	DL,AL
+	PUSH	DX ;;WRZUCA NA STOS ZAWARTO˜† REJESTRU DX (16 BIT¢W)
+	;;popf - ustawia flagi procesora o zawarto˜† stosu (16 bit¢w)
+JNE	nieent
+
+	MOV	AH,9
+	MOV	DX,c
+	INT	21h
+
+petla:
+	POP	DX
+	INT	21h
+	LOOP	petla
+
+tu:
+	MOV	DX,65
+	PUSH	65
+	CALL znak
+
+koniec:
+	popf
+	popa
+	mov	ax, 4C00h; KONIEC PROGRAMU
+	int	21h
+
+c TIMES 25 DB 10
+	db 36
+
+CXCOPY DW 0
+DXCOPY DW 0
+ent:
+	PUSH	AX ;NA STOS KOPIA AX
+	PUSH	DX ; NA STOS KOPIA DX
+
+	MOV	AH,9 ;ZMODYFIKUJ CO CHCESZ
+	MOV	DX,c
+	INT	21h
+
+	POP	DX ; USTAWIAM WARTOSC DX ZAWARTOSCIA Z WIERZCHU STOSU (16 BIT¢W Z G¢RY STOSU DO DX, PO CZYM ZDEJMUJE TE BITY ZE STOSU)
+	POP	AX ; PRZYWROC AX
+ret
+
+znak:		;argument na stosie
+	MOV	AH,2
+	MOV	[CXCOPY],CX
+	POP	CX	;ADRES POWROTU NA G¢RZE STOSTU Z FUNKCJI CALL
+	POP	DX
+	INT	21h
+	PUSH	CX	; PRZYWRACAM ADRES POWROTU
+	MOV	CX,[CXCOPY]
+ret	;MAM JU¾ DOBRY ADRES POWROTU

@@ -1,0 +1,23 @@
+org 100h
+	
+	XOR	AX,AX
+	XOR	BX,BX
+	XOR	DX,DX
+	CALL	a
+	SUB	SP,6
+	MOV	AH,2
+	POP	DX
+	INT	21h
+	POP	DX
+	INT	21h
+
+	mov	ax, 4C00h; KONIEC PROGRAMU
+	int	21h
+
+a:
+	MOV	AX,3
+	PUSH	AX
+	MOV	BX,2
+	PUSH	BX
+	ADD	SP,4
+ret

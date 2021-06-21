@@ -1,0 +1,49 @@
+org 100h
+
+	CALL	enter
+	
+	MOV	BP,SP
+	MOV	AH,1
+	INT	21h
+	PUSH	AX
+	PUSH	AX
+	MOV	SP,BP
+	SUB	SP,2
+	
+	CALL	enter
+
+	INT	21h
+	POP	DX
+	MOV	DH,AL
+	PUSH	DX
+	SUB	SP,2
+	POP	DX
+	MOV	DH,AL
+	PUSH	DX
+
+	CALL	enter
+
+	MOV	AH,2
+	POP	DX
+	INT	21h
+	MOV	DL,DH
+	INT	21h
+	POP	DX
+	INT	21h
+	MOV	DL,DH
+	INT	21h
+
+MOV	AX, 4C00h; KONIEC PROGRAMU
+INT	21h
+
+enter:
+	PUSH	AX
+	PUSH	DX
+	MOV	AH,2
+	MOV	DL,10
+	INT	21h
+	MOV	DL,13
+	INT	21h
+	POP	DX
+	POP	AX
+ret

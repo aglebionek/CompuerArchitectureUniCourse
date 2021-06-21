@@ -1,0 +1,1 @@
+.\nasm\nasm -o wynik.com -f bin bp_sp0.asm
